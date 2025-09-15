@@ -8,7 +8,9 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <title>QQPAY™ Dashboard</title>  
   <style>  
-    body { margin:0; font-family:Arial, sans-serif; background:#000; color:#fff; }  /* HEADER background animation */  
+    body { margin:0; font-family:Arial, sans-serif; background:#000; color:#fff; } /* Profile & KYC sections hidden by default */
+.section { display:none; }
+.section.active { display:block; } /* HEADER background animation */  
 header { text-align:center; padding:12px; position:relative; overflow:hidden; }  
 header::before {  
   content:""; position:absolute; top:0; left:0; right:0; bottom:0;  
