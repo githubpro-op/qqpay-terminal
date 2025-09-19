@@ -107,6 +107,7 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
     <button onclick="toggleSection('notifications')" class="nav-btn">🔔 Notifications</button>
     <button onclick="logoutConfirm()" class="nav-btn logout">Logout</button>
   </nav>
+  @include('sections.ticker')
 
   <!-- Sections -->
   <div id="home" class="section active">
