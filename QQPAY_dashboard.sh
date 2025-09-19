@@ -109,6 +109,7 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
   </nav>
   @include('sections.ticker')
   @include('sections.stats')
+  @include('sections.tiles')
 
   <!-- Sections -->
   <div id="home" class="section active">
