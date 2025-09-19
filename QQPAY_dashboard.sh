@@ -108,6 +108,7 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
     <button onclick="logoutConfirm()" class="nav-btn logout">Logout</button>
   </nav>
   @include('sections.ticker')
+  @include('sections.stats')
 
   <!-- Sections -->
   <div id="home" class="section active">
