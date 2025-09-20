@@ -102,9 +102,9 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
   <!-- Navbar -->
   <nav class="navbar">
     <button onclick="toggleSection('home')" class="nav-btn active">Home</button>
-    <button onclick="toggleSection('profile')" class="nav-btn">Profile</button>
-    <button onclick="toggleSection('kyc')" class="nav-btn">KYC</button>
-    <button onclick="toggleSection('notifications')" class="nav-btn">🔔 Notifications</button>
+  <button onclick="toggleModal('profileModal')" class="nav-btn">Profile</button>
+<button onclick="toggleModal('kycModal')" class="nav-btn">KYC</button>
+<button onclick="toggleModal('notifyModal')" class="nav-btn">🔔 Notifications</button>
     <button onclick="logoutConfirm()" class="nav-btn logout">Logout</button>
   </nav>
   @include('sections.ticker')
