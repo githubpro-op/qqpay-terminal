@@ -1,4 +1,4 @@
-cd /var/www/qqpay
+ cd /var/www/qqpay
 
 cat <<'EOF' | sudo tee resources/views/sections/tiles.blade.php
 
@@ -12,7 +12,7 @@ cat <<'EOF' | sudo tee resources/views/sections/tiles.blade.php
   </div>    <div class="tile p2p"><i>🤝</i><span>P2P</span>  
     <div id="p2pMsg" class="fade">Loading...</div>  
   </div>    <div class="tile coming"><i>🎰</i><span>Casino<br><small>Coming Soon</small></span></div>    <div class="tile refer"><i>👥</i><span>Refer & Earn</span></div>    <div class="tile leaderboard"><i>🏆</i><span>Leaderboard</span>  
-    <div id="leaderMsg" class="fade">Rank #1 – Agent-4521</div>  
+    @include('sections.leaderboard') 
   </div>    <div class="tile rewards"><i>🎁</i><span>Rewards</span>  
     <div id="rewardMsg" class="fade">Bonus ₹500 credited</div>  
   </div>  
