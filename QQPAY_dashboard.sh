@@ -113,9 +113,10 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
   @include('sections.modals')
 @include('sections.leaderboard-modal')
 @include('sections.rewards-modal')
+@include('sections.refer-modal')
   <!-- Sections -->
   <div id="home" class="section active">
-    <h2>Welcome to Home</h2>
+    <h2></h2>
   </div>
 
   <div id="profile" class="section">
