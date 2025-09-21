@@ -111,7 +111,7 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
   @include('sections.stats')
   @include('sections.tiles')
   @include('sections.modals')
-
+@include('sections.leaderboard-modal')
   <!-- Sections -->
   <div id="home" class="section active">
     <h2>Welcome to Home</h2>
