@@ -18,10 +18,9 @@ cat <<'EOF' | sudo tee resources/views/sections/tiles.blade.php
   <div class="tile refer"><i>👥</i><span>Refer & Earn</span>    
     <div id="referMsg" class="fade">Invite friends & earn rewards!</div>    
   </div>    
-  <div class="tile leaderboard">
+  <div class="tile leaderboard" onclick="toggleModal('leaderboardModal')">
   <i>🏆</i><span>Leaderboard</span>
-  @include('sections.leaderboard')
-</div> 
+</div>
   <div class="tile rewards"><i>🎁</i><span>Rewards</span>    
     <div id="rewardMsg" class="fade">Bonus ₹500 credited</div>    
   </div>    
