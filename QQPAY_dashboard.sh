@@ -116,7 +116,7 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
 @include('sections.refer-modal')
   <!-- Sections -->
   <div id="home" class="section active">
-    <h2></h2>
+    <h2> </h2>
   </div>
 
   <div id="profile" class="section">
