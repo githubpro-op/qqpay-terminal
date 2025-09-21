@@ -21,9 +21,9 @@ cat <<'EOF' | sudo tee resources/views/sections/tiles.blade.php
   <div class="tile leaderboard" onclick="toggleModal('leaderboardModal')">
   <i>🏆</i><span>Leaderboard</span>
 </div>
-  <div class="tile rewards"><i>🎁</i><span>Rewards</span>    
-    <div id="rewardMsg" class="fade">Bonus ₹500 credited</div>    
-  </div>    
+  <div class="tile rewards" onclick="toggleModal('rewardsModal')">
+  <i>🎁</i><span>Rewards</span>
+  <div id="rewardMsg" class="fade">Bonus ₹500 credited</div>
 </div>  
 
 <style>    
