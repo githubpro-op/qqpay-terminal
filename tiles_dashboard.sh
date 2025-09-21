@@ -15,8 +15,10 @@ cat <<'EOF' | sudo tee resources/views/sections/tiles.blade.php
     <div id="p2pMsg" class="fade">Loading...</div>    
   </div>    
   <div class="tile coming"><i>🎰</i><span>Casino<br><small>Coming Soon</small></span></div>    
-  <div class="tile refer"><i>👥</i><span>Refer & Earn</span>    
-    <div id="referMsg" class="fade">Invite friends & earn rewards!</div>    
+  <div class="tile refer" onclick="toggleModal('referModal')">
+  <i>👥</i><span>Refer & Earn</span>
+  <div id="referMsg" class="fade">Invite friends & earn rewards!</div>
+</div>    
   </div>    
   <div class="tile leaderboard" onclick="toggleModal('leaderboardModal')">
   <i>🏆</i><span>Leaderboard</span>
