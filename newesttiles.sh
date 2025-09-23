@@ -28,12 +28,12 @@ cat <<'EOF' | sudo tee resources/views/sections/tiles.blade.php
     <div id="leaderMsg" class="fade leaderboard-feed">Loading...</div>
   </div>
 
-  <div class="tile refer" onclick="toggleModal('refer-Modal')">
+  <div class="tile refer" onclick="toggleModal('refer-modal')">
     <i>👥</i><span class="tile-title refer-title">Refer & Earn</span>
     <div id="referMsg" class="fade refer-feed">Invite friends & earn rewards!</div>
   </div>    
 
-  <div class="tile rewards" onclick="toggleModal('rewards-Modal')">
+  <div class="tile rewards" onclick="toggleModal('rewards-modal')">
     <i>🎁</i><span class="tile-title rewards-title">Rewards</span>
     <div id="rewardMsg" class="fade rewards-feed">Bonus ₹500 credited</div>
   </div>    
