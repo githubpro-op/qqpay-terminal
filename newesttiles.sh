@@ -8,7 +8,7 @@ cat <<'EOF' | sudo tee resources/views/sections/tiles.blade.php
     <div id="qqpanelMsg" class="fade qqpanel-feed">Loading...</div>    
   </div>    
 
-  <div class="tile wallet" onclick="toggleModal('qqwallet-modal')">
+  <div class="tile wallet" onclick="toggleModal('wallet-modal')">
     <i>👛</i><span class="tile-title wallet-title">QQWALLET</span>    
     <div id="walletBal" class="fade wallet-feed">0.00 USDT<br>₹0.00</div>    
   </div>    
