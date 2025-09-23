@@ -115,6 +115,7 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
 @include('sections.rewards-modal')
 @include('sections.refer-modal')
 @include('sections.dailyearn-modal')
+@include('sections.p2p-modal')
   <!-- Sections -->
   <div id="home" class="section active">
     <h2> </h2>
