@@ -5,7 +5,7 @@ cat <<'EOF' | sudo tee resources/views/sections/tiles.blade.php
 <div class="tiles-grid">        <div class="tile qqpanel" onclick="toggleModal('qqpanel-modal')">  
     <i>📊</i><span class="tile-title qqpanel-title">QQPANEL</span>      
     <div id="qqpanelMsg" class="fade qqpanel-feed">Loading...</div>      
-  </div>        <div class="tile wallet" onclick="toggleModal('wallet-modal')">  
+  </div>        <div class="tile wallet" onclick="toggleModal('qqwallet-modal')">  
     <i>👛</i><span class="tile-title wallet-title">QQWALLET</span>      
     <div id="walletBal" class="fade wallet-feed">0.00 USDT<br>₹0.00</div>      
   </div>        <div class="tile daily" onclick="toggleModal('dailyearn-modal')">  
@@ -17,10 +17,10 @@ cat <<'EOF' | sudo tee resources/views/sections/tiles.blade.php
   </div>        <div class="tile leaderboard" onclick="toggleModal('leaderboardModal')">  
     <i>🏆</i><span class="tile-title leaderboard-title">Leaderboard</span>  
     <div id="leaderMsg" class="fade leaderboard-feed">Loading...</div>  
-  </div>    <div class="tile refer" onclick="toggleModal('referModal')">  
+  </div>    <div class="tile refer" onclick="toggleModal('refer-Modal')">  
     <i>👥</i><span class="tile-title refer-title">Refer & Earn</span>  
     <div id="referMsg" class="fade refer-feed">Invite friends & earn rewards!</div>  
-  </div>        <div class="tile rewards" onclick="toggleModal('rewardsModal')">  
+  </div>        <div class="tile rewards" onclick="toggleModal('rewards-Modal')">  
     <i>🎁</i><span class="tile-title rewards-title">Rewards</span>  
     <div id="rewardMsg" class="fade rewards-feed">Bonus ₹500 credited</div>  
   </div>        <div class="tile coming">  
