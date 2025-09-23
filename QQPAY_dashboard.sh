@@ -158,6 +158,16 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
         window.location.href="/login";
       }
     }
+  function toggleModal(id){
+    const modal = document.getElementById(id);
+    if(modal){
+      if(modal.style.display === "block"){
+        modal.style.display = "none";
+      } else {
+        modal.style.display = "block";
+      }
+    }
+  }
   </script>
 </body>
 </html>
