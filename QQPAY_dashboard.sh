@@ -166,6 +166,10 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
       } else {
         modal.style.display = "block";
       }
+      // ✅ agar Daily Earn modal hai to init kar
+  if(id === 'dailyearn-modal'){ 
+    initDailyEarnModal(); 
+    startTicker(); 
     }
   }
   </script>
