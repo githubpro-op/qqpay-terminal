@@ -120,6 +120,7 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
 @include('sections.p2p-modal')
 @include('sections.partners')
 @include('sections.footer')
+@include('sections.qqchat-widget')
   <!-- Sections -->
   <div id="home" class="section active">
     <h2> </h2>
