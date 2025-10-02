@@ -134,9 +134,8 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
     @include('sections.kyc')
   </div>
 
-  <div id="notifications" class="section">
+<div id="notifications" class="section">
   @include('sections.notifications', ['notifications' => $notifications])
-
 </div>
 
 <div id="logout" class="section">
