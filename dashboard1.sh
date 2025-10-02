@@ -135,7 +135,8 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
   </div>
 
   <div id="notifications" class="section">
-  @include('sections.notifications')
+  @include('sections.notifications', ['notifications' => $notifications])
+
 </div>
 
 <div id="logout" class="section">
