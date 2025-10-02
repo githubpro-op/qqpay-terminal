@@ -92,7 +92,7 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
       </div>
     </div>
     <div class="agent-info">
-      AGENT: <b>1234QQ</b> <span class="shield-red">🛡️</span><br>
+      AGENT: <b>{{ $user->agent_id }}</b> <span class="shield-red">🛡️</span><br>
       <span id="dateTime">--:--</span>
     </div>
   </header>
