@@ -104,7 +104,7 @@ cat <<'EOF' | sudo tee resources/views/dashboard.blade.php
     <button onclick="toggleSection('home')" class="nav-btn active">Home</button>
   <button onclick="toggleModal('profileModal')" class="nav-btn">Profile</button>
 <button onclick="toggleModal('kycModal')" class="nav-btn">KYC</button>
-<button onclick="toggleModal('notifyModal')" class="nav-btn">🔔 Notifications</button>
+<button onclick="toggleSection('notifications')" class="nav-btn">🔔 Notifications</button>
     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
   @csrf
   <button type="submit" class="nav-btn logout">🚪 Logout</button>
