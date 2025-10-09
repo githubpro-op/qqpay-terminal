@@ -1,0 +1,143 @@
+cd /var/www/qqpay
+
+cat <<'EOF' | sudo tee resources/views/sections/wallet-modal.blade.php
+<!-- ⚡ QQWALLET FUTURISTIC FIXED UI — V3.1 Neon Readable -->
+<div id="wallet-modal" class="modal">
+  <div class="modal-content wallet-neon">
+    <button onclick="closeModal('wallet-modal')" class="btn-x">✖</button>
+
+    <div class="wm-header">
+      <div class="wm-title">⚡ QQWALLET</div>
+      <div class="wm-sub">INSTANT • SECURE • SMART FINANCE</div>
+    </div>
+
+    <!-- BALANCES -->
+    <div class="wallet-balance">
+      <div class="bal-card"><h4>₹ INR</h4><p id="wBalRS">₹0.00</p></div>
+      <div class="bal-card"><h4>USDT (₮)</h4><p id="wBalUSDT">0.0000 ₮</p></div>
+      <div class="bal-card"><h4>QQ COINS</h4><p id="wBalQQ">0.0000 QQ</p></div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="wallet-actions">
+      <button class="wallet-btn dep" onclick="qqOpenForm('depositForm')">💰 Deposit</button>
+      <button class="wallet-btn wit" onclick="qqOpenForm('withdrawForm')">🏧 Withdraw</button>
+      <button class="wallet-btn exg" onclick="qqOpenForm('exchangeForm')">♻️ Exchange</button>
+      <button class="wallet-btn trf" onclick="qqOpenForm('transferForm')">🔁 Transfer</button>
+    </div>
+
+    <!-- FORMS -->
+    <div id="walletForms">
+
+      <!-- DEPOSIT -->
+      <div id="depositForm" class="form-box hidden">
+        <h3>Deposit Funds</h3>
+        <input type="number" id="depositAmt" placeholder="Enter amount in ₹" min="1" class="input-dark">
+        <div class="method-tiles">
+          <button onclick="qqDepositMethod('upi')">UPI</button>
+          <button onclick="qqDepositMethod('bank')">BANK</button>
+          <button onclick="qqDepositMethod('usdt')">USDT</button>
+        </div>
+        <div id="depositDetails" class="deposit-details"></div>
+        <label class="file-label">Upload Receipt</label>
+        <input type="file" id="depositReceipt" accept="image/*" class="input-dark">
+        <button class="primary full" onclick="submitWalletDeposit()">Submit Deposit</button>
+      </div>
+
+      <!-- WITHDRAW -->
+      <div id="withdrawForm" class="form-box hidden">
+        <h3>Withdraw Funds</h3>
+        <input type="number" id="withdrawAmt" placeholder="Enter withdraw amount" min="1" class="input-dark">
+        <div class="method-tiles">
+          <button onclick="qqWithdrawMethod('upi')">UPI</button>
+          <button onclick="qqWithdrawMethod('bank')">BANK</button>
+          <button onclick="qqWithdrawMethod('usdt')">USDT</button>
+        </div>
+        <div id="withdrawDetails" class="withdraw-details"></div>
+        <button class="primary warn full" onclick="submitWalletWithdraw()">Submit Withdraw</button>
+      </div>
+
+      <!-- EXCHANGE -->
+      <div id="exchangeForm" class="form-box hidden">
+        <h3>Exchange Currency</h3>
+        <select id="exchangeFrom" class="input-dark">
+          <option value="RS">₹ INR</option>
+          <option value="USDT">USDT</option>
+          <option value="QQ">QQ COINS</option>
+        </select>
+        <select id="exchangeTo" class="input-dark">
+          <option value="USDT">USDT</option>
+          <option value="RS">₹ INR</option>
+          <option value="QQ">QQ COINS</option>
+        </select>
+        <input type="number" id="exchangeAmt" placeholder="Enter amount" class="input-dark">
+        <button class="primary full" onclick="submitWalletExchange()">Swap</button>
+      </div>
+
+      <!-- TRANSFER -->
+      <div id="transferForm" class="form-box hidden">
+        <h3>Transfer Assets</h3>
+        <input type="text" id="transferID" placeholder="Recipient QQ ID" class="input-dark">
+        <select id="transferMode" class="input-dark">
+          <option value="RS">₹ INR</option>
+          <option value="USDT">USDT</option>
+          <option value="QQ">QQ COINS</option>
+        </select>
+        <input type="number" id="transferAmt" placeholder="Enter amount" class="input-dark">
+        <button class="primary full" onclick="submitWalletTransfer()">Send</button>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="wallet-history">
+      <div class="history-head">🧾 Recent Transactions</div>
+      <table class="wallet-bal-table">
+        <thead>
+          <tr><th>Type</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr>
+        </thead>
+        <tbody id="transaction-history">
+          <tr><td colspan="5">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:9999;overflow:auto;}
+.wallet-neon{max-width:880px;margin:3% auto;padding:25px;border-radius:20px;background:radial-gradient(circle at top,#0c0c0c,#000);border:1px solid rgba(255,0,255,0.08);box-shadow:0 0 50px rgba(0,255,128,0.05);}
+.wm-title{text-align:center;font-size:26px;color:#90ffb7;font-weight:900;letter-spacing:1px;text-shadow:0 0 15px #00ff99;}
+.wm-sub{text-align:center;color:#bbb;margin-top:4px;font-size:13px;}
+.wallet-bal-table{width:100%;margin-top:10px;text-align:center;border-collapse:collapse;}
+.wallet-bal-table th{color:#8effa3;padding:10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.wallet-bal-table td{color:#fff;padding:10px;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.03);}
+.wallet-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:20px 0;}
+.wallet-act-card{padding:18px;text-align:center;background:linear-gradient(135deg,#111,#0b0b0b);border-radius:14px;border:1px solid rgba(0,255,128,0.1);box-shadow:0 0 20px rgba(0,255,128,0.05);cursor:pointer;color:#fff;font-weight:700;}
+.wallet-act-card:hover{transform:scale(1.04);transition:0.2s;background:linear-gradient(135deg,#00ff88,#0099ff);}
+.form-box{padding:16px;margin-top:10px;border-radius:14px;background:linear-gradient(180deg,#111,#080808);border:1px solid rgba(255,255,255,0.05);}
+.form-box h3{color:#90ffb7;text-shadow:0 0 10px rgba(0,255,128,0.2);}
+.form-box input,.form-box select{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:none;background:#161616;color:#fff;font-size:14px;outline:none;}
+.method-tiles{display:flex;gap:8px;margin:10px 0;}
+.method-tiles button{flex:1;border:none;padding:12px;border-radius:10px;background:linear-gradient(90deg,#ff00ff88,#00ff99aa);color:#000;font-weight:800;cursor:pointer;}
+.primary{background:linear-gradient(90deg,#00ffa1,#00d1ff);border:none;border-radius:10px;padding:10px 16px;font-weight:800;color:#000;cursor:pointer;}
+.warn{background:linear-gradient(90deg,#ff9a7a,#ff3b7a);color:#000;}
+.wallet-history{margin-top:18px;background:linear-gradient(180deg,#0a0a0a,#050505);padding:14px;border-radius:12px;}
+.history-head{color:#90ffb7;font-weight:700;margin-bottom:8px;}
+.hidden{display:none;}
+.popup{position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);background:#0f0;padding:20px 30px;border-radius:15px;box-shadow:0 0 20px #0f08;z-index:99999;font-weight:800;}
+</style>
+
+<script>
+function qqOpenForm(id){document.querySelectorAll('#walletForms .form-box').forEach(f=>f.classList.add('hidden'));const el=document.getElementById(id);if(el)el.classList.remove('hidden');}
+function showPopup(msg){const p=document.createElement('div');p.className='popup';p.innerText=msg;document.body.appendChild(p);setTimeout(()=>p.remove(),1500);}
+function qqDepositMethod(m){let html='';if(m==='upi')html='<div><b>UPI ID:</b> admin@upi</div>';if(m==='bank')html='<div><b>Bank:</b> SBI<br>Acc: 1234567890<br>IFSC: SBIN0000111</div>';if(m==='usdt')html='<div><b>USDT TRC20:</b> TXs2Adf11xPQz99kZ</div>';document.getElementById('depositDetails').innerHTML=html;}
+function qqWithdrawMethod(m){let html='';if(m==='upi')html='<input class="input-dark" placeholder="Enter UPI ID">';if(m==='bank')html='<input class="input-dark" placeholder="Account Name"><input class="input-dark" placeholder="Account No"><input class="input-dark" placeholder="IFSC">';if(m==='usdt')html='<input class="input-dark" placeholder="Your TRC20 Address">';document.getElementById('withdrawDetails').innerHTML=html;}
+async function loadWalletData(){try{const r=await fetch('/wallet/{{ Auth::id() }}');const d=await r.json();document.getElementById('wBalRS').innerText='₹'+parseFloat(d.wallet.balance_rs).toFixed(2);document.getElementById('wBalUSDT').innerText=parseFloat(d.wallet.balance_usdt).toFixed(4)+' ₮';document.getElementById('wBalQQ').innerText=parseFloat(d.wallet.balance_qq).toFixed(4)+' QQ';const tb=document.getElementById('transaction-history');tb.innerHTML='';if(!d.transactions||!d.transactions.length)tb.innerHTML='<tr><td colspan="5">No Transactions</td></tr>';else d.transactions.forEach(t=>tb.innerHTML+=`<tr><td>${t.type}</td><td>${t.amount}</td><td>${t.method}</td><td>${t.status}</td><td>${new Date(t.created_at).toLocaleString()}</td></tr>`);}catch(e){showPopup('Wallet load failed');}}
+async function sendWalletReq(url,body){try{const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}'},body:JSON.stringify(body)});const d=await r.json();showPopup(d.message||'Done');loadWalletData();}catch(e){showPopup('Action failed');}}
+async function submitWalletDeposit(){await sendWalletReq('/wallet/deposit',{amount:depositAmt.value});}
+async function submitWalletWithdraw(){await sendWalletReq('/wallet/withdraw',{amount:withdrawAmt.value});}
+async function submitWalletExchange(){await sendWalletReq('/wallet/exchange',{from:exchangeFrom.value,to:exchangeTo.value,amount:exchangeAmt.value});}
+async function submitWalletTransfer(){await sendWalletReq('/wallet/transfer',{to_id:transferID.value,mode:transferMode.value,amount:transferAmt.value});}
+document.addEventListener('DOMContentLoaded',loadWalletData);
+</script>
+EOF
