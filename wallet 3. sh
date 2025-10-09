@@ -128,12 +128,67 @@ cat <<'EOF' | sudo tee resources/views/sections/wallet-modal.blade.php
 .wallet-neon{max-width:880px;margin:3% auto;padding:25px;border-radius:20px;background:radial-gradient(circle at top,#0c0c0c,#000);border:1px solid rgba(255,0,255,0.08);box-shadow:0 0 50px rgba(0,255,128,0.05);}
 .wm-title{text-align:center;font-size:26px;color:#90ffb7;font-weight:900;letter-spacing:1px;text-shadow:0 0 15px #00ff99;}
 .wm-sub{text-align:center;color:#bbb;margin-top:4px;font-size:13px;}
-.wallet-bal-table{width:100%;margin-top:10px;text-align:center;border-collapse:collapse;}
-.wallet-bal-table th{color:#8effa3;padding:10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.05);}
-.wallet-bal-table td{color:#fff;padding:10px;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.03);}
-.wallet-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:20px 0;}
-.wallet-act-card{padding:18px;text-align:center;background:linear-gradient(135deg,#111,#0b0b0b);border-radius:14px;border:1px solid rgba(0,255,128,0.1);box-shadow:0 0 20px rgba(0,255,128,0.05);cursor:pointer;color:#fff;font-weight:700;}
-.wallet-act-card:hover{transform:scale(1.04);transition:0.2s;background:linear-gradient(135deg,#00ff88,#0099ff);}
+/* ⚡ Neon Table Style */
+.wallet-balance{
+  margin-top:20px;
+  border-radius:14px;
+  padding:10px;
+  background:linear-gradient(180deg,#0e0e0e,#050505);
+  box-shadow:0 0 20px rgba(0,255,128,0.1);
+  border:1px solid rgba(0,255,128,0.15);
+}
+.wallet-balance table{
+  width:100%;
+  border-collapse:collapse;
+  text-align:center;
+  font-size:15px;
+}
+.wallet-balance th{
+  color:#00ffcc;
+  text-shadow:0 0 10px #00ffcc;
+  border-bottom:1px solid rgba(0,255,128,0.15);
+  padding:10px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+.wallet-balance td{
+  color:#baffc9;
+  padding:12px;
+  font-weight:700;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:0.3s;
+}
+.wallet-balance tr:hover td{
+  color:#fff;
+  text-shadow:0 0 12px #00ff80;
+}
+
+/* ⚡ Maroon Futuristic Buttons */
+.wallet-actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin:22px 0;
+}
+.wallet-btn{
+  padding:14px 0;
+  border:none;
+  border-radius:12px;
+  font-weight:900;
+  font-size:16px;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,#660022,#990033);
+  box-shadow:0 0 15px rgba(255,0,100,0.3);
+  transition:all 0.25s ease-in-out;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+.wallet-btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgba(255,0,120,0.6);
+  background:linear-gradient(135deg,#ff0044,#b3003a);
+}
 .form-box{padding:16px;margin-top:10px;border-radius:14px;background:linear-gradient(180deg,#111,#080808);border:1px solid rgba(255,255,255,0.05);}
 .form-box h3{color:#90ffb7;text-shadow:0 0 10px rgba(0,255,128,0.2);}
 .form-box input,.form-box select{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:none;background:#161616;color:#fff;font-size:14px;outline:none;}
