@@ -114,11 +114,32 @@ cat <<'EOF' | sudo tee resources/views/sections/wallet-modal.blade.php
 
     </div>
 
-    <!-- HISTORY -->
-    <div class="wallet-history">
-      <div class="history-head">Transaction History</div>
-      <div id="walletActivityList" class="history-list"></div>
-    </div>
+<!-- HISTORY -->
+<div class="wallet-history">
+  <div class="history-head">Transaction History</div>
+  <div class="history-table-wrapper">
+    <table class="wallet-bal-table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="transaction-history">
+        @foreach($transactions as $txn)
+          <tr>
+            <td>{{ ucfirst($txn->type) }}</td>
+            <td>{{ $txn->amount }}</td>
+            <td>{{ strtoupper($txn->method ?? '-') }}</td>
+            <td>{{ ucfirst($txn->status) }}</td>
+            <td>{{ $txn->created_at->format('d M Y H:i') }}</td>
+          </tr>
+        @endforeach
+      </tbody>
+    </table>
   </div>
 </div>
 
