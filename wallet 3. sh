@@ -12,11 +12,31 @@ cat <<'EOF' | sudo tee resources/views/sections/wallet-modal.blade.php
     </div>
 
     <!-- BALANCES -->
-    <div class="wallet-balance">
-      <div class="bal-card"><h4>₹ INR</h4><p id="wBalRS">₹0.00</p></div>
-      <div class="bal-card"><h4>USDT (₮)</h4><p id="wBalUSDT">0.0000 ₮</p></div>
-      <div class="bal-card"><h4>QQ COINS</h4><p id="wBalQQ">0.0000 QQ</p></div>
-    </div>
+    <!-- ⚡ Neon Table for Balances -->
+<div class="wallet-balance neon-table">
+  <table>
+    <thead>
+      <tr>
+        <th>Currency</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>₹ INR</td>
+        <td id="wBalRS">₹0.00</td>
+      </tr>
+      <tr>
+        <td>USDT (₮)</td>
+        <td id="wBalUSDT">0.0000 ₮</td>
+      </tr>
+      <tr>
+        <td>QQ COINS</td>
+        <td id="wBalQQ">0.0000 QQ</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
     <!-- ACTION BUTTONS -->
     <div class="wallet-actions">
