@@ -229,31 +229,207 @@ function saveQR(url){
 // ✅ Load Wallet Data + History
 async function loadWalletData(){
   try{
-    const res=await fetch('/wallet/{{ Auth::id() }}');
-    const data=await res.json();
+<script>
+let selectedDepositMethod = null;
 
-    document.getElementById('wBalRS').innerText='₹'+parseFloat(data.wallet.balance_rs).toFixed(2);
-    document.getElementById('wBalUSDT').innerText=parseFloat(data.wallet.balance_usdt).toFixed(4)+' ₮';
-    document.getElementById('wBalQQ').innerText=parseFloat(data.wallet.balance_qq).toFixed(4)+' QQ';
+// 🔹 Common Utility
+function qqOpenForm(id){
+  document.querySelectorAll('#walletForms .form-box').forEach(f=>f.classList.add('hidden'));
+  const el=document.getElementById(id); if(el)el.classList.remove('hidden');
+}
 
-    const tbody=document.getElementById('transaction-history');
-    tbody.innerHTML='';
-    const txns=data.transactions.slice(0,10);
-    if(txns.length===0){
-      tbody.innerHTML='<tr><td colspan="5">No transactions yet</td></tr>';
-    }else{
-      txns.forEach(tx=>{
-        tbody.innerHTML+=`
-          <tr>
-            <td>${tx.type.toUpperCase()}</td>
-            <td>₹${tx.amount}</td>
-            <td>${tx.method?tx.method.toUpperCase():'-'}</td>
-            <td>${tx.status.toUpperCase()}</td>
-            <td>${new Date(tx.created_at).toLocaleString()}</td>
-          </tr>`;
-      });
-    }
-  }catch(e){console.error('Wallet load failed',e);}
+function showPopup(msg){
+  const p=document.createElement('div');
+  p.className='popup';
+  p.innerText=msg;
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),2000);
+}
+
+function showDebugBox(title, data, color='red'){
+  let box=document.getElementById('debugBox');
+  if(!box){
+    box=document.createElement('pre');
+    box.id='debugBox';
+    box.style.position='fixed';
+    box.style.bottom='10px';
+    box.style.left='10px';
+    box.style.width='95%';
+    box.style.maxHeight='40vh';
+    box.style.overflow='auto';
+    box.style.padding='10px';
+    box.style.borderRadius='8px';
+    box.style.background='#111';
+    box.style.color=color;
+    box.style.fontSize='12px';
+    box.style.zIndex='99999';
+    document.body.appendChild(box);
+  }
+  box.innerHTML = `<b>${title}</b>\n` + JSON.stringify(data, null, 2);
+}
+
+// 🔹 Copy / QR
+function copyText(id){
+  const txt=document.getElementById(id)?.innerText;
+  if(!txt)return;
+  navigator.clipboard.writeText(txt);
+  showPopup('Copied: '+txt);
+}
+
+function saveQR(url){
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='qqwallet_qr.png';
+  a.click();
+  showPopup('QR Saved');
+}
+
+// 🔹 Deposit / Withdraw Dynamic Sections
+function qqDepositMethod(method){
+  selectedDepositMethod = method;
+  let html='';
+  if(method==='upi'){
+    html=`<div><b>UPI ID:</b> <span id="upiId">admin@upi</span>
+    <button onclick="copyText('upiId')">Copy</button>
+    <button onclick="saveQR('/images/sample_upi_qr.png')">Save QR</button><br>
+    <img src="/images/sample_upi_qr.png" width="130" style="margin-top:8px;border-radius:8px;">
+    </div>`;
+  }else if(method==='bank'){
+    html=`<div><b>Bank Details:</b><br>
+    Name: QQPAY ADMIN<br>Account No: 1234567890<br>Bank Name: SBI<br>IFSC: SBIN0000111</div>`;
+  }else if(method==='usdt'){
+    html=`<div><b>USDT Address (TRC20):</b> <span id="usdtAddr">TXs2Adf11xPQz99kZ</span>
+    <button onclick="copyText('usdtAddr')">Copy</button>
+    <button onclick="saveQR('/images/sample_usdt_qr.png')">Save QR</button><br>
+    <img src="/images/sample_usdt_qr.png" width="130" style="margin-top:8px;border-radius:8px;">
+    </div>`;
+  }
+  document.getElementById('depositDetails').innerHTML=html;
+}
+
+function qqWithdrawMethod(method){
+  let html='';
+  if(method==='upi'){
+    html='<label>Your UPI ID</label><input type="text" id="withdrawUpi" placeholder="Enter your upi@bank">';
+  }else if(method==='bank'){
+    html='<label>Account Holder Name</label><input type="text" id="withdrawName" placeholder="Enter your name"><label>Bank Name</label><input type="text" id="withdrawBank" placeholder="Enter bank name"><label>Account Number</label><input type="text" id="withdrawAcc" placeholder="Enter account number"><label>IFSC Code</label><input type="text" id="withdrawIfsc" placeholder="Enter IFSC code">';
+  }else if(method==='usdt'){
+    html='<label>Your USDT Address (TRC20)</label><input type="text" id="withdrawUsdt" placeholder="Enter your TRC20 address">';
+  }
+  document.getElementById('withdrawDetails').innerHTML=html;
+}
+
+// 🔹 Helper for API debug fetch
+async function apiFetch(url, options, actionName){
+  try{
+    const res = await fetch(url, options);
+    const text = await res.text();  // raw text
+    let data;
+    try{ data = JSON.parse(text); }catch{ data = { raw: text }; }
+    console.log(actionName, data);
+    showDebugBox(actionName, data);
+    return data;
+  }catch(e){
+    console.error('Fetch error:', e);
+    showDebugBox(actionName+' ERROR', e, 'orange');
+    showPopup('Network or API Error ❌');
+  }
+}
+
+// 🔹 Real Submit Buttons
+async function submitWalletDeposit(){
+  const amt=document.getElementById('depositAmt').value;
+  const file=document.getElementById('depositReceipt').files[0];
+  if(!amt)return showPopup('Enter amount');
+  const formData=new FormData();
+  formData.append('amount', amt);
+  formData.append('method', selectedDepositMethod || 'upi');
+  if(file) formData.append('receipt', file);
+
+  const data=await apiFetch('/wallet/deposit', {
+    method:'POST',
+    headers:{'X-CSRF-TOKEN':'{{ csrf_token() }}'},
+    body:formData
+  }, 'Deposit API');
+
+  showPopup(data?.msg || data?.message || 'Deposit done ✅');
+  loadWalletData();
+}
+
+async function submitWalletWithdraw(){
+  const amt=document.getElementById('withdrawAmt').value;
+  if(!amt)return showPopup('Enter amount');
+  const data=await apiFetch('/wallet/withdraw', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'X-CSRF-TOKEN':'{{ csrf_token() }}'
+    },
+    body:JSON.stringify({ amount: amt })
+  }, 'Withdraw API');
+  showPopup(data?.msg || data?.message || 'Withdraw done ✅');
+  loadWalletData();
+}
+
+async function submitWalletExchange(){
+  const from=document.getElementById('exchangeFrom').value;
+  const to=document.getElementById('exchangeTo').value;
+  const amt=document.getElementById('exchangeAmt').value;
+  if(!amt)return showPopup('Enter amount');
+  const data=await apiFetch('/wallet/exchange', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'X-CSRF-TOKEN':'{{ csrf_token() }}'
+    },
+    body:JSON.stringify({ from, to, amount: amt })
+  }, 'Exchange API');
+  showPopup(data?.msg || data?.message || 'Exchange complete ✅');
+  loadWalletData();
+}
+
+async function submitWalletTransfer(){
+  const user=document.getElementById('transferID').value;
+  const mode=document.getElementById('transferMode').value;
+  const amt=document.getElementById('transferAmt').value;
+  if(!user||!amt)return showPopup('Enter user & amount');
+  const data=await apiFetch('/wallet/transfer', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'X-CSRF-TOKEN':'{{ csrf_token() }}'
+    },
+    body:JSON.stringify({ recipient:user, mode, amount:amt })
+  }, 'Transfer API');
+  showPopup(data?.msg || data?.message || 'Transfer done ✅');
+  loadWalletData();
+}
+
+// 🔹 Load Wallet Data
+async function loadWalletData(){
+  const data=await apiFetch('/wallet/{{ Auth::id() }}', {method:'GET'}, 'Load Wallet');
+  if(!data || !data.wallet)return;
+  document.getElementById('wBalRS').innerText='₹'+parseFloat(data.wallet.balance_rs||0).toFixed(2);
+  document.getElementById('wBalUSDT').innerText=parseFloat(data.wallet.balance_usdt||0).toFixed(4)+' ₮';
+  document.getElementById('wBalQQ').innerText=parseFloat(data.wallet.balance_qq||0).toFixed(4)+' QQ';
+
+  const tbody=document.getElementById('transaction-history');
+  tbody.innerHTML='';
+  const txns=data.transactions||[];
+  if(txns.length===0){
+    tbody.innerHTML='<tr><td colspan="5">No transactions yet</td></tr>';
+  }else{
+    txns.slice(0,10).forEach(tx=>{
+      tbody.innerHTML+=`
+        <tr>
+          <td>${tx.type?.toUpperCase()}</td>
+          <td>₹${tx.amount}</td>
+          <td>${tx.method?tx.method.toUpperCase():'-'}</td>
+          <td>${tx.status?.toUpperCase()}</td>
+          <td>${new Date(tx.created_at).toLocaleString()}</td>
+        </tr>`;
+    });
+  }
 }
 document.addEventListener('DOMContentLoaded',loadWalletData);
 </script>
